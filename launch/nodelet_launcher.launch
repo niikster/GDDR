@@ -1,0 +1,37 @@
+<!-- http://wiki.ros.org/depth_image_proc -->
+<!-- https://gist.github.com/bhaskara/2400165  -->
+
+<launch>
+    <!-- nodelet manager -->
+  <node pkg="nodelet" type="nodelet" name="nodelet_manager"  args="manager"/>
+
+    <!-- nodelet of depth_image_proc/register -->
+  <node pkg="nodelet" type="nodelet" name="depth_register_nodelet"
+        args="load depth_image_proc/register nodelet_manager">
+    <!-- subscribed topics -->
+    <remap from="rgb/camera_info" to="/camera/rgb/camera_info"/>
+    <remap from="depth/camera_info" to="/camera/depth/camera_info"/>
+    <!-- <remap from="depth/image_rect" to="/camera/depth/image_rect"/> -->
+    <remap from="depth/image_rect" to="/y/filtered_depth"/>
+    <!-- published topics -->
+    <remap from="depth_registered/camera_info" to="y/depth_registered/camera_info"/>
+    <remap from="depth_registered/image_rect" to="y/depth_registered/image_rect"/>
+  </node>
+
+   <!-- nodelet of depth_image_proc/point_cloud_xyzrgb -->
+  <node pkg="nodelet" type="nodelet" name="point_cloud_xyzrgb_nodelet"
+        args="load depth_image_proc/point_cloud_xyzrgb nodelet_manager">
+    <!-- subscribed topics -->
+    <remap from="rgb/camera_info" to="/camera/rgb/camera_info"/>
+    <remap from="rgb/image_rect_color" to="/camera/rgb/image_rect_color"/>
+    <remap from="depth_registered/image_rect" to="y/depth_registered/image_rect"/>
+    <!-- published topics -->
+    <remap from="depth_registered/points" to="y/point_cloud_xyzrgb/points"/>
+  </node>
+
+
+
+  
+
+
+</launch>

@@ -1,0 +1,16 @@
+<launch>
+<!-- launch everything -->
+
+<!-- launch openni2 for Asus Xtion Live Pro -->
+  <include file="$(find openni2_launch)/launch/openni2.launch"/>
+
+<!-- launch YOLOv8 tracker -->
+  <include file="$(find testing_kuka)/launch/tracker.launch"/>
+
+<!-- run filter depth node -->
+  <node name="filter_depth_node" pkg="testing_kuka" type="filter_depth_node.py" output="screen"> </node>
+
+<!-- launch nodelet manager to build Point Cloud from filtered depth -->
+<include file="$(find testing_kuka)/launch/nodelet_launcher.launch"/>
+
+</launch>
